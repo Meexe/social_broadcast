@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Settings
+settings.csv
+
+# IDE
+.vscode
