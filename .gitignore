@@ -133,3 +133,6 @@ settings.csv
 
 # IDE
 .vscode
+
+# MacOS files
+.DS_Store

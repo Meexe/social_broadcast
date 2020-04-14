@@ -13,6 +13,7 @@ class App(QtWidgets.QMainWindow, design.Ui_MainWindow):
         self.setAcceptDrops(True)
         self.send_btn.clicked.connect(self.send)
         self.clear_btn.clicked.connect(self.clear)
+        self.files = set()
         
     def dragEnterEvent(self, event):
         if event.mimeData().hasUrls():
@@ -23,24 +24,33 @@ class App(QtWidgets.QMainWindow, design.Ui_MainWindow):
     def dropEvent(self, event):
         files = event.mimeData().urls()
         for f in files:
-            self.file_box.setText(f.path())
+            self.files.add(f.path())
+
+        if len(self.files) > 5:
+            self.clear()
+            msg = QtWidgets.QMessageBox()
+            msg.setText('Too much images!')
+            msg.exec()
+        else:
+            self.file_box.setText('\n'.join(self.files))
 
     def send(self):
         message = self.message_box.toPlainText()
-        file = self.file_box.toPlainText()
-        if file:
-            print(file)
+        if self.files:
+            vk_res = 'vk - ' + vk.postPhoto(settings['vk_token'], settings['vk_gid'], message, self.files)
+            fb_res = 'fb - ' + fb.postPhoto(settings['fb_token'], settings['fb_gid'], message, self.files)
         else:
-            vk_res = 'vk - ' + vk.post(settings['vk_token'], settings['vk_gid'], 'baca')
-            fb_res = 'fb - ' + fb.post(settings['fb_token'], settings['fb_gid'], 'baca')
-            response = vk_res + '\n' + fb_res
-            msg = QtWidgets.QMessageBox()
-            msg.setText(response)
-            msg.exec()
+            vk_res = 'vk - ' + vk.post(settings['vk_token'], settings['vk_gid'], message)
+            fb_res = 'fb - ' + fb.post(settings['fb_token'], settings['fb_gid'], message)
+        response = vk_res + '\n' + fb_res
+        msg = QtWidgets.QMessageBox()
+        msg.setText(response)
+        msg.exec()
         self.clear()
 
     def clear(self):
         self.message_box.clear()
+        self.files = set()
         self.file_box.clear()
 
 
