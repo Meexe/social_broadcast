@@ -1,2 +1,4 @@
-vk_token;<insert your vk api token here>
-vk_gid;-<insert vk group id here>
+vk_token;<vk api token>
+vk_gid;-<vk group id>
+fb_token;<graph api token>
+fb_gid;<fb group id>
