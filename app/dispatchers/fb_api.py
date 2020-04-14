@@ -13,6 +13,6 @@ def post(token, gid, message):
     req = requests.post(URL + gid + '/feed', params=body)
     res = json.loads(req.text)
     try:
-        return 'Success! New post id - ' + str(res['id'])
-    except KeyError:
         return res['error']['message']
+    except KeyError:
+        return 'success'

@@ -16,6 +16,6 @@ def post(token, gid, message):
     req = requests.post(URL, params=body)
     res = json.loads(req.text)
     try:
-        return 'Success! New post id - ' + str(res['response']['post_id'])
-    except KeyError:
         return res['error']['error_msg']
+    except KeyError:
+        return 'success'
